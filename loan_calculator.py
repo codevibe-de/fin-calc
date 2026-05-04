@@ -1,4 +1,5 @@
 def calculate_monthly_payment(p: float, r: float, n: int) -> None:
+    # computes and prints monthly payment, total repaid, and total interest
     if r == 0:
         x = p / n
     else:
@@ -11,6 +12,7 @@ def calculate_monthly_payment(p: float, r: float, n: int) -> None:
 
 
 def main():
+    # entry point: prompts for loan details and prints the repayment breakdown
     print("=== Loan Calculator ===\n")
 
     p = float(input("Loan amount: "))

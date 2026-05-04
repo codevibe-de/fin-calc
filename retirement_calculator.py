@@ -3,16 +3,19 @@ import math
 
 
 def _fmt(amount: float, currency: str) -> str:
+    # formats a monetary amount aligned to 13 chars with currency symbol
     return f"{amount:>13,.2f} {currency}"
 
 
 def _accumulated_savings(monthly_contribution: float, months: float, monthly_rate: float) -> float:
+    # future value of regular monthly contributions after compound growth
     if monthly_rate == 0:
         return monthly_contribution * months
     return monthly_contribution * ((1 + monthly_rate) ** months - 1) / monthly_rate
 
 
 def _required_nest_egg(monthly_payout: float, months: float, monthly_rate: float) -> float:
+    # present value of an annuity paying monthly_payout for the given number of months
     if monthly_rate == 0:
         return monthly_payout * months
     return monthly_payout * (1 - (1 + monthly_rate) ** -months) / monthly_rate
@@ -20,6 +23,7 @@ def _required_nest_egg(monthly_payout: float, months: float, monthly_rate: float
 
 def solve_monthly_contribution(interest_rate: float, accumulation_years: float,
                                monthly_payout: float, payout_years: float) -> tuple[float, float]:
+    # returns (required monthly contribution, target nest egg) given the other three variables
     m = interest_rate / 12
     n = accumulation_years * 12
     k = payout_years * 12
@@ -33,6 +37,7 @@ def solve_monthly_contribution(interest_rate: float, accumulation_years: float,
 
 def solve_accumulation_years(interest_rate: float, monthly_contribution: float,
                              monthly_payout: float, payout_years: float) -> tuple[float, float]:
+    # returns (years needed to accumulate, target nest egg) given the other three variables
     m = interest_rate / 12
     k = payout_years * 12
     fv = _required_nest_egg(monthly_payout, k, m)
@@ -45,6 +50,7 @@ def solve_accumulation_years(interest_rate: float, monthly_contribution: float,
 
 def solve_monthly_payout(interest_rate: float, monthly_contribution: float,
                          accumulation_years: float, payout_years: float) -> tuple[float, float]:
+    # returns (affordable monthly payout, accumulated nest egg) given the other three variables
     m = interest_rate / 12
     n = accumulation_years * 12
     k = payout_years * 12
@@ -58,6 +64,7 @@ def solve_monthly_payout(interest_rate: float, monthly_contribution: float,
 
 def solve_payout_years(interest_rate: float, monthly_contribution: float,
                        accumulation_years: float, monthly_payout: float) -> tuple[float, float]:
+    # returns (years the nest egg lasts, accumulated nest egg) given the other three variables
     m = interest_rate / 12
     n = accumulation_years * 12
     fv = _accumulated_savings(monthly_contribution, n, m)
@@ -73,6 +80,7 @@ def solve_payout_years(interest_rate: float, monthly_contribution: float,
 
 
 def main():
+    # interactive CLI: prompts the user to solve for one of the four retirement variables
     parser = argparse.ArgumentParser()
     parser.add_argument("--currency", default="€")
     args = parser.parse_args()
