@@ -1,3 +1,5 @@
 /.claude/settings.local.json
 /.playwright-mcp/
 /tmp/
+__pycache__/
+.pytest_cache/
